@@ -5,7 +5,7 @@ description: The ultimate global skill to maximize token savings using the full 
 
 # Token Reduction Ultimate
 
-**Triggers:** `smarter` · `budget` · `rtk` · `zagi` · `slowql` · `token` · `compress` · `optimize` · `reduce tokens` · `make it cheaper` · `context window` · `save tokens` · `context optimization` · `bloat` · `LLM costs` · `git json` · `SQL analyze` · `bare metal` · `clean machine` · `nothing installed` · `no tools` · `bootstrap`
+**Triggers:** `smarter` · `budget` · `rtk` · `slowql` · `token` · `compress` · `optimize` · `reduce tokens` · `make it cheaper` · `context window` · `save tokens` · `context optimization` · `bloat` · `LLM costs` · `git json` · `SQL analyze` · `bare metal` · `clean machine` · `nothing installed` · `no tools` · `bootstrap`
 
 Maximize your AI context budget by chaining smart proxies, sandboxed execution, semantic search,
 compressed serialization, and code intelligence — all discovered and orchestrated through
@@ -93,7 +93,6 @@ Once installed, `sc plugins install <name>` discovers and installs all other tok
 sc plugins install rtk             # Rust Token Killer
 sc plugins install tokf            # Token Filter
 sc plugins install context-mode    # MCP sandbox
-sc plugins install zagi            # JSON git output
 
 # Tier 2 — codebase optimization
 sc plugins install token-optimizer-cli
@@ -143,7 +142,6 @@ sc plugins list 2>&1 | grep -iE "rtk|tokf|context|token|codefetch|project|yek|pr
 
 ```
 ┌─ Am I about to run a command with verbose output? ─────→ rtk <command>
-├─ Do I need structured git output (JSON)? ────────────→ zagi --json status/log/diff
 ├─ Am I analyzing 50+ files or large output? ───────────→ context-mode
 ├─ Do I need to understand a codebase quickly? ─────────→ project-map → yek / codefetch
 ├─ Am I searching for code patterns? ───────────────────→ probe / colgrep / codedb
@@ -250,29 +248,6 @@ echo '{"jsonrpc":"2.0","id":1,"method":"tools/call","params":{"name":"ctx_execut
 - Repeated searches over the same content
 - URL fetching (raw HTML never enters context)
 - Data processing tasks
-
-### 4. zagi — Better Git CLI (JSON output)
-Zig-based git replacement that outputs structured JSON instead of verbose text.
-`git --json status / log / diff` gives you the same info in a fraction of the tokens.
-
-**Verified:** Clean JSON output for status, log, and diff operations.
-
-```bash
-# Install (single curl command, no deps)
-curl -fsSL zagi.sh/install | sh
-
-# Core usage — drop-in git replacement with --json
-zagi --json status        # Branch, staged/modified/untracked as JSON
-zagi --json log -n 5      # Commit history as structured JSON array
-zagi --json diff          # Diff as JSON
-zagi --compat status      # Git-identical text output (for humans)
-```
-
-**When to use zagi:**
-- Every time you'd run `git status/log/diff` — JSON output is 2-5x more token-efficient
-- CI pipelines that consume git state
-- Agents that need to parse git state without dumping raw text
-- Complements rtk's git filtering (rtk compresses, zagi structures)
 
 ## Tier 2 — Codebase Optimization
 
@@ -487,20 +462,15 @@ cargo install tokf
 npm install -g context-mode
 # Verify: context-mode --version
 
-# 4. zagi — structured git JSON
-curl -fsSL zagi.sh/install | sh
-# Verify: zagi --version
-
-# 5. slowql — SQL static analysis
+# 4. slowql — SQL static analysis
 pipx install slowql
 # Verify: slowql --help
 
-# 6. token-optimizer-cli — periodic audits
+# 5. token-optimizer-cli — periodic audits
 token-optimizer-cli audit . --json | head
 
-# 7. Verify all tools
+# 6. Verify all tools
 rtk --version
-zagi --version
 tokf --version
 slowql --help 2>&1 | head -1
 token-optimizer-cli --help 2>&1 | head -2
@@ -523,9 +493,7 @@ chainlink session start
 
 # 2. Understand current state
 project-map --max-depth 2
-zagi --json status      # Structured git state, 2-5x less tokens
-zagi --json diff        # Git diff as clean JSON
-rtk git status          # Also compress with rtk for quick glance
+rtk git status          # Compressed git status
 rtk git diff
 
 # 3. Search efficiently
@@ -573,7 +541,6 @@ colgrep "core functionality" -k 10
 sloc-guard check
 
 # 2. Audit token impact of changes
-zagi --json diff        # Structured diff for token analysis
 rtk git diff
 slowql --non-interactive --export json --input-file migrations/  # Check SQL changes
 token-optimizer-cli check src/changed-file.ts
@@ -592,7 +559,7 @@ chainlink issue create "Bug: X" -p critical -l bug
 colgrep "error handling" -k 10
 probe search "failure pattern" --max-tokens 800
 codedb find error_handler
-zagi --json log -n 20   # Check recent commits for what changed
+rtk git log -n 20       # Check recent commits for what changed
 rtk grep "ERROR" logs/
 slowql --non-interactive --fast --input-file suspect.sql  # Check if SQL is the issue
 context-mode ctx_execute: analyze logs in sandbox
@@ -604,7 +571,6 @@ chainlink session end --notes "Root cause identified"
 | Situation | Tool | Why |
 |---|---|---|
 | Running any command | rtk | 60-90% automatic savings |
-| Git status/log/diff as JSON | zagi | Structured output, 2-5x less tokens |
 | Docker/kubectl/prisma | tokf | Custom filters for tool output |
 | 50+ file analysis | context-mode | 98% reduction via sandbox |
 | Codebase overview | project-map | Instant, token-efficient |
@@ -623,7 +589,6 @@ chainlink session end --notes "Root cause identified"
 All benchmarks verified from live system:
 
 - **rtk:** 86% average savings on 4,439 commands (11.3M tokens saved)
-- **zagi:** JSON git output is 2-5x more token-efficient than raw git text
 - **context-mode:** Up to 98% reduction vs reading files directly
 - **tokf:** 51 built-in filters for common development tools
 - **slowql:** 272 analysis rules, catches bad SQL before token waste
@@ -640,10 +605,6 @@ echo "=== TOKEN REDUCTION HEALTH CHECK ==="
 echo ""
 echo "--- rtk ---"
 rtk --version 2>&1 && echo "✓ rtk installed"
-echo ""
-
-echo "--- zagi ---"
-zagi --version 2>&1 && echo "✓ zagi installed"
 echo ""
 
 echo "--- tokf ---"
@@ -713,7 +674,6 @@ echo "=== HEALTH CHECK COMPLETE ==="
 **Weekly:**
 ```bash
 rtk gain              # Check savings trend
-zagi --version        # Ensure zagi is ready
 tokf gain             # Check tokf usage
 slowql --non-interactive --fast --input-file recent.sql  # Check for SQL issues
 token-optimizer-cli audit . --json  # Scan for new bloat
